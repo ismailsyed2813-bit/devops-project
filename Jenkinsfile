@@ -12,13 +12,13 @@ pipeline {
         stage('Clean Old Containers') {
             steps {
                 sh '''
-                docker ps -q | xargs -r docker stop
-                docker ps -aq | xargs -r docker rm
+                docker system prune -a -f
+                docker volume prune -f
                 '''
             }
         }
 
-        stage('Build & Deploy with Compose') {
+        stage('Build & Deploy') {
             steps {
                 sh '''
                 docker compose down || true
