@@ -22,9 +22,13 @@ pipeline {
             }
         }
 
-        stage('Run Container') {
+        stage('Deploy Container') {
             steps {
-                sh 'docker run -d -p 3000:3000 ismail2813/devops-app'
+                sh '''
+                docker stop devops-container || true
+                docker rm devops-container || true
+                docker run -d -p 3000:3000 --name devops-container ismail2813/devops-app
+                '''
             }
         }
     }
