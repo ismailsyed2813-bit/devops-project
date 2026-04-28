@@ -9,6 +9,15 @@ pipeline {
             }
         }
 
+        stage('Clean Old Containers') {
+            steps {
+                sh '''
+                docker ps -q | xargs -r docker stop
+                docker ps -aq | xargs -r docker rm
+                '''
+            }
+        }
+
         stage('Build & Deploy with Compose') {
             steps {
                 sh '''
@@ -17,6 +26,5 @@ pipeline {
                 '''
             }
         }
-
     }
 }
